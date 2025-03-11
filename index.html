@@ -40,6 +40,7 @@
             width: 100%;
             overflow: hidden;
             position: relative;
+            margin-top: 20px;
         }
         .features-slider {
             display: flex;
@@ -53,11 +54,19 @@
             padding: 20px;
             background: #e9ecef;
             border-radius: 10px;
-            height: 200px;
+            height: 250px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .features-wrapper {
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
         }
         footer {
             margin-top: 20px;
@@ -81,12 +90,14 @@
     </div>
     <div class="features-container">
         <h2>LIGHT를 이용하면?</h2>
-        <div class="features-slider" id="slider">
-            <div class="feature-item">🔍 신뢰할 수 있는 장소 리뷰</div>
-            <div class="feature-item">📍 개인 맞춤 장소 추천</div>
-            <div class="feature-item">👥 그룹 공유 기능</div>
-            <div class="feature-item">📊 개인 활동 분석</div>
-            <div class="feature-item">🔒 데이터 보호</div>
+        <div class="features-wrapper">
+            <div class="features-slider" id="slider">
+                <div class="feature-item">🔍 신뢰할 수 있는 장소 리뷰</div>
+                <div class="feature-item">📍 개인 맞춤 장소 추천</div>
+                <div class="feature-item">👥 그룹 공유 기능</div>
+                <div class="feature-item">📊 개인 활동 분석</div>
+                <div class="feature-item">🔒 데이터 보호</div>
+            </div>
         </div>
     </div>
     <footer>
