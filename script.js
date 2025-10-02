@@ -47,64 +47,155 @@ window.addEventListener('scroll', () => {
 });
 
 // 고급 스크롤 애니메이션 시스템
+class AdvancedScrollAnimations {
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        this.createScrollProgress();
+        this.setupParallax();
+        this.setupTextReveal();
+        this.setupSectionTransitions();
+        this.setupScrollBasedAnimations();
+        this.setupMagneticHover();
+    }
+
+    // 스크롤 진행 표시기 생성
+    createScrollProgress() {
+        const progressBar = document.createElement('div');
+        progressBar.className = 'scroll-progress';
+        document.body.appendChild(progressBar);
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+        });
+    }
+
+    // 패럴랙스 효과 설정
+    setupParallax() {
+        const parallaxElements = document.querySelectorAll('.parallax-element');
+        
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const windowHeight = window.innerHeight;
+            
+            parallaxElements.forEach((element, index) => {
+                const rect = element.getBoundingClientRect();
+                const speed = 0.5 + (index * 0.1);
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+    }
+
+    // 텍스트 리빌 애니메이션
+    setupTextReveal() {
+        const textElements = document.querySelectorAll('.text-reveal');
+        
+        const textObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        });
+
+        textElements.forEach(el => textObserver.observe(el));
+    }
+
+    // 섹션 전환 효과
+    setupSectionTransitions() {
+        const sections = document.querySelectorAll('section');
+        
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                } else {
+                    entry.target.classList.remove('in-view');
+                }
+            });
+        }, {
+            threshold: 0.3,
+            rootMargin: '0px 0px -200px 0px'
+        });
+
+        sections.forEach(section => {
+            section.classList.add('section-transition');
+            sectionObserver.observe(section);
+        });
+    }
+
+    // 스크롤 기반 애니메이션
+    setupScrollBasedAnimations() {
+        const animatedElements = document.querySelectorAll('.scroll-animate, .text-slide-up, .text-slide-left, .text-slide-right, .scale-in, .rotate-in');
+        
+        const animationObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        animatedElements.forEach(el => animationObserver.observe(el));
+    }
+
+    // 마그네틱 호버 효과
+    setupMagneticHover() {
+        const magneticElements = document.querySelectorAll('.magnetic-hover');
+        
+        magneticElements.forEach(element => {
+            element.addEventListener('mousemove', (e) => {
+                const rect = element.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                const distance = Math.sqrt(x * x + y * y);
+                const maxDistance = 50;
+                
+                if (distance < maxDistance) {
+                    const moveX = (x / maxDistance) * 10;
+                    const moveY = (y / maxDistance) * 10;
+                    
+                    element.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.05)`;
+                }
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                element.style.transform = 'translate(0px, 0px) scale(1)';
+            });
+        });
+    }
+}
+
+// 향상된 스크롤 애니메이션 (기존 호환성 유지)
 const scrollObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('animate');
-            
-            // 텍스트 애니메이션 트리거
-            if (entry.target.classList.contains('text-animate')) {
-                animateText(entry.target);
-            }
-            
-            // 카운터 애니메이션 트리거
-            if (entry.target.classList.contains('counter-animate')) {
-                animateCounter(entry.target);
-            }
         }
     });
 }, {
     threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
+    rootMargin: '0px 0px -50px 0px'
 });
-
-// 텍스트 애니메이션 함수
-function animateText(element) {
-    const text = element.textContent;
-    element.textContent = '';
-    element.style.opacity = '1';
-    
-    let i = 0;
-    const timer = setInterval(() => {
-        if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-        } else {
-            clearInterval(timer);
-        }
-    }, 50);
-}
-
-// 카운터 애니메이션 함수
-function animateCounter(element) {
-    const target = parseInt(element.textContent.replace('+', ''));
-    const duration = 2000;
-    const increment = target / (duration / 16);
-    let current = 0;
-    
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-            element.textContent = target + '+';
-            clearInterval(timer);
-        } else {
-            element.textContent = Math.floor(current) + '+';
-        }
-    }, 16);
-}
 
 // 애니메이션 대상 요소들에 observer 적용
 document.addEventListener('DOMContentLoaded', function() {
+    // 고급 스크롤 애니메이션 시스템 초기화
+    new AdvancedScrollAnimations();
+    
     const animateElements = document.querySelectorAll('.service-item, .solution-item, .feature-item, .problem-item, .team-member, .stat-item, .contact-item, .cta-item, .value-card, .business-card, .tech-item, .achievement-item, .effect-item, .flow-step, .contact-method-card, .info-card, .tech-card, .impact-item, .tech-detailed-card, .arch-layer, .section-header, .about-text, .about-image, .hero-content, .hero-visual');
     
     animateElements.forEach((el, index) => {
@@ -196,45 +287,15 @@ if (statsSection) {
 // Contact methods - no form submission needed
 // Users will use mailto: and tel: links directly
 
-// 고급 패럴랙스 스크롤 효과
+// Parallax effect for hero section
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
-    const windowHeight = window.innerHeight;
-    
-    // Hero 섹션 패럴랙스
     const heroVisual = document.querySelector('.hero-visual');
+    
     if (heroVisual) {
-        const rate = scrolled * -0.3;
+        const rate = scrolled * -0.5;
         heroVisual.style.transform = `translateY(${rate}px)`;
     }
-    
-    // Floating elements 패럴랙스
-    const floatingCards = document.querySelectorAll('.floating-card');
-    floatingCards.forEach((card, index) => {
-        const rate = scrolled * (0.1 + index * 0.05);
-        card.style.transform = `translateY(${rate}px)`;
-    });
-    
-    // Background elements 패럴랙스
-    const backgroundElements = document.querySelectorAll('.about-image, .brand-visual');
-    backgroundElements.forEach(element => {
-        const rect = element.getBoundingClientRect();
-        const rate = (windowHeight - rect.top) * 0.1;
-        element.style.transform = `translateY(${rate}px)`;
-    });
-    
-    // Text reveal 애니메이션
-    const textElements = document.querySelectorAll('.section-title, .hero-title');
-    textElements.forEach(element => {
-        const rect = element.getBoundingClientRect();
-        const isVisible = rect.top < windowHeight && rect.bottom > 0;
-        
-        if (isVisible) {
-            const progress = Math.max(0, Math.min(1, (windowHeight - rect.top) / windowHeight));
-            element.style.opacity = progress;
-            element.style.transform = `translateY(${(1 - progress) * 50}px)`;
-        }
-    });
 });
 
 // Typing effect for hero title
@@ -403,54 +464,6 @@ navLinks.forEach(link => {
     link.addEventListener('blur', () => {
         link.style.outline = 'none';
     });
-});
-
-// 마우스 추적 효과
-document.addEventListener('mousemove', (e) => {
-    const cursor = document.querySelector('.custom-cursor');
-    if (cursor) {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-    }
-});
-
-// 커스텀 커서 생성
-function createCustomCursor() {
-    const cursor = document.createElement('div');
-    cursor.className = 'custom-cursor';
-    cursor.innerHTML = '<div class="cursor-dot"></div>';
-    document.body.appendChild(cursor);
-}
-
-// 3D 틸트 효과
-function addTiltEffect() {
-    const tiltElements = document.querySelectorAll('.magnetic, .glassmorphism');
-    
-    tiltElements.forEach(element => {
-        element.addEventListener('mousemove', (e) => {
-            const rect = element.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = (y - centerY) / 10;
-            const rotateY = (centerX - x) / 10;
-            
-            element.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-        });
-        
-        element.addEventListener('mouseleave', () => {
-            element.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
-        });
-    });
-}
-
-// 페이지 로드 시 초기화
-document.addEventListener('DOMContentLoaded', function() {
-    createCustomCursor();
-    addTiltEffect();
 });
 
 console.log('LIGHT website loaded successfully! 🌱');
