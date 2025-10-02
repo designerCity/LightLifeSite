@@ -2,7 +2,15 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#00ff88">
+    <meta name="msapplication-navbutton-color" content="#00ff88">
+    <meta name="apple-mobile-web-app-title" content="LIGHT">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕯️</text></svg>">
+    <link rel="manifest" href="manifest.json">
     <title>LIGHT - 혁신적인 기술 솔루션</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -36,64 +44,84 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <div class="hero-content scroll-animate">
-            <h1 class="hero-title text-reveal">
-                <span class="highlight">LIGHT</span><br>
-                진짜 경험을 기록하고, 신뢰할 수 있는 장소를 찾다
-            </h1>
-            <p class="hero-description text-slide-up delay-1">
-                <strong>광고성 리뷰 대신</strong>, 나와 친구의 진짜 경험을 기록하세요
-            </p>
-            <p class="hero-subdescription text-slide-up delay-2">
-                LIGHT는 신뢰 기반 장소 기록 플랫폼입니다.<br>
-                함께한 추억을 남기고, 믿을 수 있는 장소 정보를 공유하세요.
-            </p>
-            <div class="hero-buttons text-slide-up delay-3">
-                <a href="https://testflight.apple.com/join/Dn41DMXF" class="btn btn-primary magnetic-hover">앱 다운로드</a>
-                <a href="#about" class="btn btn-secondary magnetic-hover">지금 시작하기</a>
-            </div>
-            <p class="hero-tagline">당신만의 공간 기록, 광고 없이 진심만 담다</p>
+        <!-- Hero Background Elements -->
+        <div class="hero-background">
+            <div class="hero-gradient"></div>
+            <div class="hero-particles"></div>
+            <div class="hero-grid"></div>
         </div>
-        <div class="hero-visual scroll-animate delay-1 parallax-element">
-            <div class="app-mockup magnetic-hover glitter-effect">
-                <div class="mockup-screen">
-                    <div class="mockup-header">
-                        <div class="mockup-dots">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
+        
+        <!-- Hero Content -->
+        <div class="hero-container">
+            <div class="hero-content scroll-animate">
+                <!-- Hero Badge -->
+                <div class="hero-badge text-slide-up">
+                    <i class="fas fa-sparkles"></i>
+                    <span>신뢰 기반 장소 기록 플랫폼</span>
+                </div>
+                
+                <!-- Hero Title -->
+                <h1 class="hero-title text-reveal">
+                    <span class="highlight">LIGHT</span><br>
+                    <span class="title-main">진짜 경험을 기록하고</span><br>
+                    <span class="title-sub">신뢰할 수 있는 장소를 찾다</span>
+                </h1>
+                
+                <!-- Hero Description -->
+                <div class="hero-description text-slide-up delay-1">
+                    <p class="description-main">
+                        <strong>광고성 리뷰 대신</strong>, 나와 친구의 진짜 경험을 기록하세요
+                    </p>
+                    <p class="description-sub">
+                        LIGHT는 신뢰 기반 장소 기록 플랫폼입니다.<br>
+                        함께한 추억을 남기고, 믿을 수 있는 장소 정보를 공유하세요.
+                    </p>
+                </div>
+                
+                <!-- Hero Stats -->
+                <div class="hero-stats text-slide-up delay-2">
+                    <div class="stat-item">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">사용자 리뷰</div>
                     </div>
-                    <div class="mockup-content">
-                        <div class="mockup-place-card">
-                            <div class="place-info">
-                                <h4>카페 루프탑</h4>
-                                <p>친구와 함께한 따뜻한 오후</p>
-                            </div>
-                            <div class="place-rating">
-                                <i class="fas fa-heart"></i>
-                                <span>좋아요</span>
-                            </div>
-                        </div>
-                        <div class="mockup-review">
-                            <p>"친구와 함께한 시간이 정말 좋았어요. 분위기도 좋고 커피도 맛있었습니다."</p>
-                        </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">앱 다운로드</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">신뢰 기반</div>
                     </div>
                 </div>
-            </div>
-            <div class="floating-elements">
-            <div class="floating-card">
-                <i class="fas fa-heart"></i>
-                <span>진정성</span>
-            </div>
-            <div class="floating-card">
-                <i class="fas fa-users"></i>
-                <span>신뢰</span>
-            </div>
-            <div class="floating-card">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>연결</span>
+                
+                <!-- Hero Buttons -->
+                <div class="hero-buttons text-slide-up delay-3">
+                    <a href="https://testflight.apple.com/join/Dn41DMXF" class="btn btn-primary magnetic-hover">
+                        <i class="fas fa-download"></i>
+                        <span>앱 다운로드</span>
+                    </a>
+                    <a href="#about" class="btn btn-secondary magnetic-hover">
+                        <i class="fas fa-play"></i>
+                        <span>지금 시작하기</span>
+                    </a>
                 </div>
+                
+                <!-- Hero Tagline -->
+                <p class="hero-tagline text-slide-up delay-4">
+                    <i class="fas fa-quote-left"></i>
+                    당신만의 공간 기록, 광고 없이 진심만 담다
+                    <i class="fas fa-quote-right"></i>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <div class="scroll-text">스크롤하여 더 알아보기</div>
+            <div class="scroll-arrow">
+                <i class="fas fa-chevron-down"></i>
             </div>
         </div>
     </section>
@@ -157,32 +185,7 @@
                     </p>
                     </div>
                 </div>
-                <div class="about-image scroll-animate delay-2 text-slide-right scale-in">
-                    <div class="brand-visual magnetic-hover">
-                        <div class="light-symbol">
-                        <i class="fas fa-lightbulb"></i>
-                        </div>
-                        <div class="connection-lines">
-                            <div class="line line-1"></div>
-                            <div class="line line-2"></div>
-                            <div class="line line-3"></div>
-                        </div>
-                        <div class="connection-points">
-                            <div class="point point-1">
-                                <i class="fas fa-user"></i>
-                                <span>나</span>
-                            </div>
-                            <div class="point point-2">
-                                <i class="fas fa-users"></i>
-                                <span>우리</span>
-                            </div>
-                            <div class="point point-3">
-                                <i class="fas fa-city"></i>
-                                <span>도시</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </section>
