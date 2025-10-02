@@ -46,7 +46,34 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// LIGHT 스타일 스크롤 애니메이션
+// 향상된 스크롤 애니메이션
+const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('animate');
+        }
+    });
+}, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+});
+
+// 애니메이션 대상 요소들에 observer 적용
+document.addEventListener('DOMContentLoaded', function() {
+    const animateElements = document.querySelectorAll('.service-item, .solution-item, .feature-item, .problem-item, .team-member, .stat-item, .contact-item, .cta-item, .value-card, .business-card, .tech-item, .achievement-item, .effect-item, .flow-step, .contact-method-card, .info-card, .tech-card, .impact-item, .tech-detailed-card, .arch-layer, .section-header, .about-text, .about-image, .hero-content, .hero-visual');
+    
+    animateElements.forEach((el, index) => {
+        el.classList.add('scroll-animate');
+        
+        // 지연 애니메이션 적용
+        if (index % 3 === 1) el.classList.add('delay-1');
+        if (index % 3 === 2) el.classList.add('delay-2');
+        
+        scrollObserver.observe(el);
+    });
+});
+
+// 기존 스크롤 애니메이션 (백업)
 document.addEventListener("scroll", function() {
     const elements = document.querySelectorAll(".service-item, .solution-item, .feature-item, .problem-item, .team-member, .stat-item, .contact-item, .cta-item, .value-card, .business-card, .tech-item, .achievement-item, .effect-item, .flow-step, .contact-method-card, .info-card, .tech-card, .impact-item, .tech-detailed-card, .feature-item, .arch-layer");
     const triggerBottom = window.innerHeight * 0.9;
@@ -159,6 +186,24 @@ window.addEventListener('load', () => {
         setTimeout(() => {
             typeWriter(heroTitle, originalText.replace(/<[^>]*>/g, ''), 50);
         }, 1000);
+    }
+    
+    // Hero 섹션 애니메이션
+    const heroContent = document.querySelector('.hero-content');
+    const heroVisual = document.querySelector('.hero-visual');
+    
+    if (heroContent) {
+        heroContent.classList.add('scroll-animate');
+        setTimeout(() => {
+            heroContent.classList.add('animate');
+        }, 500);
+    }
+    
+    if (heroVisual) {
+        heroVisual.classList.add('scroll-animate', 'delay-1');
+        setTimeout(() => {
+            heroVisual.classList.add('animate');
+        }, 800);
     }
 });
 
