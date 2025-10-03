@@ -315,6 +315,15 @@ body {
     margin-right: auto;
 }
 
+/* 모바일에서 히어로 태그라인과 스크롤 인디케이터 겹침 방지 */
+@media (max-width: 768px) {
+    .hero-tagline {
+        margin-bottom: 60px;
+        font-size: 0.85rem;
+        padding: 10px 16px;
+    }
+}
+
 .hero-tagline i {
     color: #00ff88;
     margin: 0 5px;
@@ -333,6 +342,27 @@ body {
     color: #888888;
     z-index: 3;
     animation: scrollBounce 2s ease-in-out infinite;
+}
+
+/* 모바일에서 스크롤 인디케이터 위치 조정 */
+@media (max-width: 768px) {
+    .scroll-indicator {
+        bottom: 20px;
+        z-index: 10;
+    }
+    
+    .scroll-text {
+        font-size: 0.8rem;
+    }
+    
+    .scroll-arrow {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .scroll-arrow i {
+        font-size: 0.7rem;
+    }
 }
 
 .scroll-text {
@@ -3652,7 +3682,7 @@ section {
         font-size: 0.8rem;
     }
     
-    /* 앱 환경에서의 터치 최적화 */
+    /* 모바일 터치 최적화 */
     * {
         -webkit-tap-highlight-color: rgba(0, 255, 136, 0.2);
         -webkit-touch-callout: none;
@@ -3670,19 +3700,47 @@ section {
         user-select: text;
     }
     
+    /* 모바일 터치 피드백 */
+    .btn, .nav-link, .hamburger, .magnetic-hover {
+        -webkit-tap-highlight-color: rgba(0, 255, 136, 0.3);
+        transition: all 0.2s ease;
+    }
+    
+    .btn:active, .nav-link:active, .hamburger:active {
+        transform: scale(0.95);
+        background: rgba(0, 255, 136, 0.1);
+    }
+    
     /* 앱 환경에서의 스크롤 최적화 */
     body {
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
     }
     
-    /* 터치 영역 최소 44px 보장 */
+    /* 모바일 터치 영역 최적화 */
     .btn, .nav-link, .hamburger {
-        min-height: 44px;
-        min-width: 44px;
+        min-height: 48px;
+        min-width: 48px;
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 12px 16px;
+        border-radius: 8px;
+    }
+    
+    .btn {
+        min-height: 48px;
+        padding: 14px 24px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 24px;
+        touch-action: manipulation;
+    }
+    
+    .btn-large {
+        min-height: 52px;
+        padding: 16px 32px;
+        font-size: 1.1rem;
     }
     
     /* 앱 환경에서의 네비게이션 개선 */
@@ -3698,11 +3756,17 @@ section {
         padding: 0 20px;
     }
     
-    /* 앱 환경에서의 히어로 섹션 최적화 */
+    /* 모바일 히어로 섹션 최적화 */
     .hero {
         min-height: 100vh;
         min-height: 100dvh; /* 동적 뷰포트 높이 */
         padding: calc(60px + env(safe-area-inset-top)) 20px env(safe-area-inset-bottom) 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        position: relative;
     }
     
     /* 앱 환경에서의 버튼 최적화 */
@@ -3722,13 +3786,30 @@ section {
         transform: scale(0.98);
     }
     
-    /* 앱 환경에서의 카드 최적화 */
+    /* 모바일 카드 최적화 */
     .service-item, .solution-item, .feature-item, .problem-item, 
     .value-card, .business-card, .contact-method-card {
         margin-bottom: 20px;
         border-radius: 16px;
-        padding: 24px;
+        padding: 20px;
         touch-action: manipulation;
+        text-align: center;
+    }
+    
+    .service-content, .solution-content, .feature-content {
+        text-align: center;
+    }
+    
+    .service-title, .solution-title, .feature-title {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+        line-height: 1.3;
+    }
+    
+    .service-description, .solution-description, .feature-description {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-bottom: 0;
     }
     
     /* 앱 환경에서의 스크롤 영역 최적화 */
@@ -3741,23 +3822,48 @@ section {
         padding: 60px 0;
     }
     
-    /* 앱 환경에서의 텍스트 크기 최적화 */
+    /* 모바일 텍스트 크기 최적화 */
     .hero-title {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
         line-height: 1.2;
-        margin-bottom: 24px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .title-main {
+        font-size: 1.8rem;
+        line-height: 1.3;
+        margin: 8px 0;
+    }
+    
+    .title-sub {
+        font-size: 1.4rem;
+        line-height: 1.4;
+        margin: 8px 0;
     }
     
     .hero-description {
+        font-size: 1.1rem;
+        line-height: 1.5;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+    
+    .description-main {
         font-size: 1.3rem;
         line-height: 1.4;
-        margin-bottom: 20px;
+        margin-bottom: 12px;
+    }
+    
+    .description-sub {
+        font-size: 1rem;
+        line-height: 1.5;
     }
     
     .hero-subdescription {
-        font-size: 1rem;
-        line-height: 1.5;
-        margin-bottom: 32px;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin-bottom: 24px;
     }
     
     /* 앱 환경에서의 버튼 그룹 최적화 */
@@ -3772,7 +3878,7 @@ section {
         max-width: 280px;
     }
     
-    /* 앱 환경에서의 모바일 메뉴 최적화 */
+    /* 모바일 네비게이션 메뉴 최적화 */
     .nav-menu {
         position: fixed;
         left: -100%;
@@ -3788,6 +3894,7 @@ section {
         padding: 40px 0;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        z-index: 999;
     }
     
     .nav-menu.active {
@@ -3796,20 +3903,43 @@ section {
     
     .nav-link {
         display: block;
-        padding: 16px 24px;
-        font-size: 1.1rem;
+        padding: 18px 24px;
+        font-size: 1.2rem;
         font-weight: 500;
         color: #ffffff;
         text-decoration: none;
         transition: all 0.3s ease;
         border-radius: 12px;
         margin: 8px 20px;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
     }
     
     .nav-link:hover, .nav-link:active {
-        background: rgba(0, 255, 136, 0.1);
+        background: rgba(0, 255, 136, 0.15);
         color: #00ff88;
         transform: translateX(8px);
+        box-shadow: 0 4px 12px rgba(0, 255, 136, 0.2);
+    }
+    
+    .nav-link::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 0;
+        background: #00ff88;
+        border-radius: 2px;
+        transition: height 0.3s ease;
+    }
+    
+    .nav-link:hover::before, .nav-link:active::before {
+        height: 24px;
     }
     
     /* 앱 환경에서의 햄버거 메뉴 최적화 */
@@ -3852,17 +3982,37 @@ section {
         max-width: 100%;
     }
     
-    /* 앱 환경에서의 히어로 스탯 최적화 */
+    /* 모바일 히어로 스탯 최적화 */
     .hero-stats {
         flex-direction: column;
-        gap: 15px;
-        padding: 15px;
+        gap: 12px;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(0, 255, 136, 0.2);
+    }
+    
+    .stat-item {
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+    }
+    
+    .stat-item:last-child {
+        border-bottom: none;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+        margin-bottom: 4px;
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
     }
     
     .stat-divider {
-        width: 100%;
-        height: 1px;
-        background: rgba(0, 255, 136, 0.3);
+        display: none;
     }
     
     /* 앱 환경에서의 히어로 비주얼 최적화 */
@@ -3906,41 +4056,78 @@ section {
         margin: 16px auto;
     }
     
-    /* 앱 환경에서의 그리드 레이아웃 최적화 */
+    /* 모바일 그리드 레이아웃 최적화 */
     .about-content,
     .contact-hero,
     .company-content {
         grid-template-columns: 1fr;
-        gap: 32px;
+        gap: 24px;
+        padding: 0 16px;
     }
     
     .contact-methods-grid {
         grid-template-columns: 1fr;
-        gap: 24px;
+        gap: 20px;
+        padding: 0 16px;
     }
     
     .contact-info-grid {
         grid-template-columns: 1fr;
-        gap: 16px;
+        gap: 12px;
+        padding: 0 16px;
     }
     
-    /* 앱 환경에서의 플로우 섹션 최적화 */
+    .problem-content,
+    .solution-wrapper,
+    .features-wrapper,
+    .value-grid,
+    .business-grid,
+    .team-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 16px;
+    }
+    
+    .tech-detailed-grid,
+    .architecture-grid,
+    .tech-grid,
+    .impact-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 0 16px;
+    }
+    
+    /* 모바일 플로우 섹션 최적화 */
     .simple-flow {
         flex-direction: column;
-        gap: 24px;
+        gap: 20px;
+        padding: 0 16px;
     }
     
     .flow-arrow {
         transform: rotate(90deg);
-        font-size: 1.8rem;
-        margin: 16px 0;
+        font-size: 1.5rem;
+        margin: 12px 0;
+        color: #00ff88;
     }
     
     .flow-step {
         min-width: auto;
         width: 100%;
-        max-width: 300px;
+        max-width: 280px;
         margin: 0 auto;
+        padding: 20px;
+        text-align: center;
+    }
+    
+    .step-content h4 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+    
+    .step-content p {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
     }
     
     /* 앱 환경에서의 기술 섹션 최적화 */
@@ -3988,11 +4175,12 @@ section {
         gap: 16px;
     }
     
-    /* 앱 환경에서의 푸터 최적화 */
+    /* 모바일 푸터 최적화 */
     .footer-main {
         grid-template-columns: 1fr;
-        gap: 24px;
+        gap: 20px;
         text-align: center;
+        padding: 0 16px;
     }
     
     .link-grid {
@@ -4002,7 +4190,18 @@ section {
     
     .policy-links {
         flex-direction: column;
-        gap: 12px;
+        gap: 8px;
+        text-align: center;
+    }
+    
+    .footer-logo {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .footer-info, .footer-contact, .footer-links {
+        text-align: center;
+        margin-bottom: 20px;
     }
     
     /* 앱 환경에서의 팀 그리드 최적화 */
@@ -4011,15 +4210,24 @@ section {
         gap: 24px;
     }
     
-    /* 앱 환경에서의 섹션 타이틀 최적화 */
+    /* 모바일 섹션 타이틀 최적화 */
     .section-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
         line-height: 1.3;
+        margin-bottom: 16px;
+        text-align: center;
     }
     
     .section-subtitle {
-        font-size: 1rem;
+        font-size: 0.95rem;
         line-height: 1.5;
+        margin-bottom: 32px;
+        text-align: center;
+    }
+    
+    .section-header {
+        margin-bottom: 40px;
+        padding: 0 16px;
     }
     
     /* 앱 환경에서의 통계 섹션 최적화 */
@@ -4060,6 +4268,941 @@ section {
         scroll-snap-type: y mandatory;
         scroll-behavior: smooth;
     }
+}
+
+/* 모바일 환경 최적화 */
+.mobile-device .hero {
+    padding: calc(60px + env(safe-area-inset-top)) 16px env(safe-area-inset-bottom) 16px;
+}
+
+.mobile-device .container {
+    padding: 0 16px;
+}
+
+.mobile-device .section-header {
+    padding: 0 16px;
+}
+
+.mobile-device .nav-menu {
+    padding: 32px 0;
+}
+
+.mobile-device .nav-link {
+    padding: 16px 20px;
+    font-size: 1.1rem;
+    margin: 6px 16px;
+}
+
+.mobile-device .btn {
+    min-height: 48px;
+    padding: 14px 24px;
+    font-size: 1rem;
+}
+
+.mobile-device .hero-title {
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
+.mobile-device .title-main {
+    font-size: 1.6rem;
+}
+
+.mobile-device .title-sub {
+    font-size: 1.2rem;
+}
+
+.mobile-device .hero-description {
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.mobile-device .description-main {
+    font-size: 1.2rem;
+}
+
+.mobile-device .description-sub {
+    font-size: 0.9rem;
+}
+
+.mobile-device .section-title {
+    font-size: 1.6rem;
+}
+
+.mobile-device .section-subtitle {
+    font-size: 0.9rem;
+}
+
+.mobile-device .hero-stats {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    margin: 16px 0;
+}
+
+.mobile-device .stat-item {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+}
+
+.mobile-device .stat-item:last-child {
+    border-bottom: none;
+}
+
+.mobile-device .stat-number {
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+}
+
+.mobile-device .stat-label {
+    font-size: 0.8rem;
+}
+
+.mobile-device .hero-buttons {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.mobile-device .btn {
+    width: 100%;
+    max-width: 280px;
+    min-height: 48px;
+    padding: 14px 24px;
+    font-size: 1rem;
+}
+
+.mobile-device .hero-tagline {
+    font-size: 0.85rem;
+    margin-top: 16px;
+    margin-bottom: 60px;
+    padding: 10px 16px;
+}
+
+.mobile-device .scroll-indicator {
+    bottom: 20px;
+    z-index: 10;
+}
+
+.mobile-device .scroll-text {
+    font-size: 0.8rem;
+}
+
+.mobile-device .scroll-arrow {
+    width: 24px;
+    height: 24px;
+}
+
+.mobile-device .scroll-arrow i {
+    font-size: 0.7rem;
+}
+
+.mobile-device .service-item, 
+.mobile-device .solution-item, 
+.mobile-device .feature-item, 
+.mobile-device .problem-item, 
+.mobile-device .value-card, 
+.mobile-device .business-card, 
+.mobile-device .contact-method-card {
+    margin-bottom: 16px;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.mobile-device .service-title, 
+.mobile-device .solution-title, 
+.mobile-device .feature-title {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.mobile-device .service-description, 
+.mobile-device .solution-description, 
+.mobile-device .feature-description {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.mobile-device .problem-text h3 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+
+.mobile-device .problem-text p {
+    font-size: 0.85rem;
+}
+
+.mobile-device .solution-image, 
+.mobile-device .feature-image {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 12px;
+}
+
+.mobile-device .solution-image i, 
+.mobile-device .feature-image i {
+    font-size: 1.2rem;
+}
+
+.mobile-device .problem-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 12px;
+}
+
+.mobile-device .problem-icon i {
+    font-size: 1rem;
+}
+
+.mobile-device .value-icon, 
+.mobile-device .business-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 16px;
+}
+
+.mobile-device .value-icon i, 
+.mobile-device .business-icon i {
+    font-size: 1.5rem;
+}
+
+.mobile-device .value-card h3, 
+.mobile-device .business-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+}
+
+.mobile-device .value-description, 
+.mobile-device .business-title {
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+
+.mobile-device .value-benefits, 
+.mobile-device .business-features {
+    text-align: left;
+    margin-top: 12px;
+}
+
+.mobile-device .value-benefits li, 
+.mobile-device .business-features li {
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+    padding-left: 16px;
+}
+
+.mobile-device .contact-method-card {
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.mobile-device .method-content h4 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+}
+
+.mobile-device .method-content p {
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+
+.mobile-device .method-details {
+    margin-bottom: 20px;
+}
+
+.mobile-device .detail-item {
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+}
+
+.mobile-device .btn-large {
+    min-height: 48px;
+    padding: 14px 24px;
+    font-size: 1rem;
+}
+
+.mobile-device .info-card {
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.mobile-device .info-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 12px;
+}
+
+.mobile-device .info-icon i {
+    font-size: 1rem;
+}
+
+.mobile-device .info-content h4 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.mobile-device .info-content p {
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+}
+
+.mobile-device .info-content span {
+    font-size: 0.8rem;
+}
+
+.mobile-device .team-member {
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.mobile-device .member-photo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 16px;
+}
+
+.mobile-device .member-photo i {
+    font-size: 2rem;
+}
+
+.mobile-device .team-member h3 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+}
+
+.mobile-device .member-role {
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+}
+
+.mobile-device .member-description {
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+}
+
+.mobile-device .member-details {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.mobile-device .member-details p {
+    font-size: 0.75rem;
+    margin-bottom: 3px;
+}
+
+.mobile-device .footer-main {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    text-align: center;
+    padding: 0 16px;
+}
+
+.mobile-device .footer-logo {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.mobile-device .footer-logo i {
+    font-size: 1.5rem;
+    margin-right: 8px;
+}
+
+.mobile-device .footer-logo span {
+    font-size: 1.5rem;
+}
+
+.mobile-device .footer-slogan {
+    font-size: 0.9rem;
+    margin-top: 8px;
+}
+
+.mobile-device .footer-info, 
+.mobile-device .footer-contact, 
+.mobile-device .footer-links {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.mobile-device .footer-info h4, 
+.mobile-device .footer-contact h4, 
+.mobile-device .footer-links h4 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+
+.mobile-device .company-info p, 
+.mobile-device .contact-info p {
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+}
+
+.mobile-device .contact-info p i {
+    font-size: 0.8rem;
+    margin-right: 6px;
+}
+
+.mobile-device .link-grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+}
+
+.mobile-device .footer-links a {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: rgba(0, 255, 136, 0.1);
+    margin: 4px 0;
+    display: inline-block;
+}
+
+.mobile-device .footer-links a:hover {
+    background: rgba(0, 255, 136, 0.2);
+    color: #00ff88;
+}
+
+.mobile-device .policy-links {
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+}
+
+.mobile-device .policy-links a {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    margin: 2px 0;
+    display: inline-block;
+}
+
+.mobile-device .policy-links a:hover {
+    background: rgba(0, 255, 136, 0.1);
+    color: #00ff88;
+}
+
+.mobile-device .footer-bottom {
+    text-align: center;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0, 255, 136, 0.2);
+    color: #888888;
+}
+
+.mobile-device .footer-bottom p {
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+}
+
+.mobile-device .footer-tagline {
+    font-size: 0.8rem;
+    margin-top: 6px;
+    color: #00ff88;
+}
+
+.mobile-device .hero-badge {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    margin-bottom: 20px;
+}
+
+.mobile-device .hero-badge i {
+    font-size: 0.7rem;
+}
+
+.mobile-device .hero-badge span {
+    font-size: 0.8rem;
+}
+
+.mobile-device .hero-content {
+    text-align: center;
+    max-width: 100%;
+    padding: 0 16px;
+}
+
+.mobile-device .hero-container {
+    flex-direction: column;
+    gap: 24px;
+    padding: 60px 16px 80px;
+    text-align: center;
+}
+
+.mobile-device .hero-visual {
+    margin-top: 24px;
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-device .app-mockup {
+    width: 200px;
+    height: 280px;
+    border-radius: 20px;
+    position: relative;
+}
+
+.mobile-device .floating-card {
+    position: relative;
+    margin: 12px auto;
+    width: 120px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.mobile-device .floating-card:nth-child(1),
+.mobile-device .floating-card:nth-child(2),
+.mobile-device .floating-card:nth-child(3) {
+    position: relative;
+    top: auto;
+    right: auto;
+    left: auto;
+    bottom: auto;
+    margin: 12px auto;
+}
+
+.mobile-device .card-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+}
+
+.mobile-device .card-icon i {
+    font-size: 1rem;
+}
+
+.mobile-device .card-title {
+    font-size: 0.8rem;
+    margin-bottom: 2px;
+}
+
+.mobile-device .card-subtitle {
+    font-size: 0.7rem;
+}
+
+.mobile-device .simple-flow {
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 16px;
+}
+
+.mobile-device .flow-arrow {
+    transform: rotate(90deg);
+    font-size: 1.2rem;
+    margin: 8px 0;
+    color: #00ff88;
+}
+
+.mobile-device .flow-step {
+    min-width: auto;
+    width: 100%;
+    max-width: 260px;
+    margin: 0 auto;
+    padding: 16px;
+    text-align: center;
+}
+
+.mobile-device .step-content h4 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+
+.mobile-device .step-content p {
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+}
+
+.mobile-device .step-tech {
+    margin-top: 6px;
+}
+
+.mobile-device .tech-tag {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 8px;
+}
+
+.mobile-device .step-impact {
+    margin-top: 6px;
+}
+
+.mobile-device .impact-metric {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 8px;
+}
+
+.mobile-device .tech-detailed-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0 16px;
+}
+
+.mobile-device .tech-detailed-card {
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.mobile-device .tech-card-header {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.mobile-device .tech-main-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    margin: 0 auto;
+}
+
+.mobile-device .tech-main-icon i {
+    font-size: 1.5rem;
+}
+
+.mobile-device .tech-title-section h5 {
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+}
+
+.mobile-device .tech-category {
+    font-size: 0.8rem;
+    padding: 2px 8px;
+    border-radius: 8px;
+}
+
+.mobile-device .tech-description p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.mobile-device .tech-features-detailed {
+    margin-bottom: 16px;
+}
+
+.mobile-device .feature-item {
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+}
+
+.mobile-device .feature-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+}
+
+.mobile-device .feature-icon i {
+    font-size: 0.8rem;
+}
+
+.mobile-device .feature-content h6 {
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+}
+
+.mobile-device .feature-content p {
+    font-size: 0.75rem;
+    line-height: 1.3;
+}
+
+.mobile-device .tech-specs {
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.mobile-device .spec-item {
+    padding: 4px 0;
+}
+
+.mobile-device .spec-label {
+    font-size: 0.8rem;
+}
+
+.mobile-device .spec-value {
+    font-size: 0.8rem;
+}
+
+.mobile-device .architecture-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 0 16px;
+}
+
+.mobile-device .arch-layer {
+    padding: 16px;
+    text-align: center;
+}
+
+.mobile-device .layer-title {
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+
+.mobile-device .layer-tech {
+    font-size: 0.8rem;
+    line-height: 1.3;
+}
+
+.mobile-device .impact-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0 16px;
+}
+
+.mobile-device .impact-item {
+    padding: 20px;
+    margin-bottom: 12px;
+}
+
+.mobile-device .impact-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 16px;
+}
+
+.mobile-device .impact-icon i {
+    font-size: 1.5rem;
+}
+
+.mobile-device .impact-content h4 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.mobile-device .impact-content p {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+.mobile-device .impact-metric {
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+}
+
+.mobile-device .metric-label {
+    font-size: 0.8rem;
+}
+
+.mobile-device .vision-mission {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 24px 0;
+}
+
+.mobile-device .vision, 
+.mobile-device .mission {
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.mobile-device .vision h4, 
+.mobile-device .mission h4 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.mobile-device .vision p, 
+.mobile-device .mission p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.mobile-device .value-list {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.mobile-device .value-item {
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+}
+
+.mobile-device .value-item i {
+    font-size: 1rem;
+    margin-right: 6px;
+}
+
+.mobile-device .value-item span {
+    font-size: 0.8rem;
+}
+
+.mobile-device .story-section {
+    margin-top: 24px;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.mobile-device .story-text {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-top: 12px;
+}
+
+.mobile-device .brand-visual {
+    width: 160px;
+    height: 160px;
+    margin: 0 auto;
+}
+
+.mobile-device .light-symbol {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.mobile-device .light-symbol i {
+    font-size: 1.2rem;
+}
+
+.mobile-device .logo-text {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.mobile-device .point {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.mobile-device .point i {
+    font-size: 1rem;
+}
+
+.mobile-device .point span {
+    font-size: 0.6rem;
+}
+
+.mobile-device .impact-flow {
+    flex-direction: column;
+    gap: 12px;
+}
+
+.mobile-device .flow-step {
+    padding: 16px;
+    margin-bottom: 8px;
+}
+
+.mobile-device .step-icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 12px;
+}
+
+.mobile-device .step-icon i {
+    font-size: 1.2rem;
+}
+
+.mobile-device .flow-step h4 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+
+.mobile-device .flow-step p {
+    font-size: 0.8rem;
+}
+
+.mobile-device .social-effects h3 {
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+}
+
+.mobile-device .effects-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.mobile-device .effect-item {
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.mobile-device .effect-item i {
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+
+.mobile-device .effect-item h4 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.mobile-device .effect-item p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.mobile-device .company-content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 0 16px;
+}
+
+.mobile-device .company-details h3 {
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+}
+
+.mobile-device .company-meta {
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.mobile-device .meta-item {
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.mobile-device .meta-item i {
+    font-size: 1rem;
+    width: 16px;
+}
+
+.mobile-device .company-story, 
+.mobile-device .company-vision {
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+}
+
+.mobile-device .company-story h4, 
+.mobile-device .company-vision h4 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.mobile-device .company-story p, 
+.mobile-device .company-vision p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.mobile-device .company-achievements h4 {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+}
+
+.mobile-device .achievement-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 16px;
+}
+
+.mobile-device .achievement-item {
+    padding: 16px 12px;
+    border-radius: 12px;
+}
+
+.mobile-device .achievement-number {
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+}
+
+.mobile-device .achievement-label {
+    font-size: 0.8rem;
 }
 
 /* 앱 환경에서의 초소형 화면 최적화 */
