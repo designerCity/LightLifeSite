@@ -4,6 +4,12 @@ const navMenu = document.querySelector('.nav-menu');
 const navLinks = document.querySelectorAll('.nav-link');
 const navbar = document.querySelector('.navbar');
 
+// 모바일 환경 감지
+const isMobileDevice = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           window.innerWidth <= 768;
+};
+
 // 앱 환경 감지
 const isAppEnvironment = () => {
     return window.matchMedia('(display-mode: standalone)').matches || 
@@ -11,12 +17,17 @@ const isAppEnvironment = () => {
            document.referrer.includes('android-app://');
 };
 
+// 모바일 환경 최적화
+if (isMobileDevice()) {
+    document.body.classList.add('mobile-device');
+}
+
 // 앱 환경에서의 추가 최적화
 if (isAppEnvironment()) {
     document.body.classList.add('app-environment');
 }
 
-// Mobile Navigation Toggle with 앱 환경 최적화
+// 모바일 네비게이션 토글 최적화
 hamburger.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -24,20 +35,24 @@ hamburger.addEventListener('click', (e) => {
     hamburger.classList.toggle('active');
     navMenu.classList.toggle('active');
     
-    // 앱 환경에서의 햅틱 피드백
-    if (navigator.vibrate && isAppEnvironment()) {
+    // 모바일 환경에서의 햅틱 피드백
+    if (navigator.vibrate && (isMobileDevice() || isAppEnvironment())) {
         navigator.vibrate(50);
     }
     
-    // 앱 환경에서의 스크롤 방지
+    // 모바일 환경에서의 스크롤 방지
     if (navMenu.classList.contains('active')) {
         document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
     } else {
         document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
     }
 });
 
-// Close mobile menu when clicking on a link with 앱 환경 최적화
+// 모바일 메뉴 링크 클릭 최적화
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -45,9 +60,11 @@ navLinks.forEach(link => {
         hamburger.classList.remove('active');
         navMenu.classList.remove('active');
         document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
         
-        // 앱 환경에서의 햅틱 피드백
-        if (navigator.vibrate && isAppEnvironment()) {
+        // 모바일 환경에서의 햅틱 피드백
+        if (navigator.vibrate && (isMobileDevice() || isAppEnvironment())) {
             navigator.vibrate(30);
         }
         
@@ -56,7 +73,7 @@ navLinks.forEach(link => {
         const targetSection = document.querySelector(targetId);
         
         if (targetSection) {
-            const offsetTop = targetSection.offsetTop - (isAppEnvironment() ? 60 : 70);
+            const offsetTop = targetSection.offsetTop - (isMobileDevice() ? 60 : 70);
             window.scrollTo({
                 top: offsetTop,
                 behavior: 'smooth'
@@ -409,6 +426,84 @@ const typeWriter = (element, text, speed = 100) => {
     type();
 };
 
+// 모바일 환경에서의 성능 최적화
+const optimizePerformanceForMobile = () => {
+    if (isMobileDevice() || isAppEnvironment()) {
+        // 모바일 환경에서의 애니메이션 최적화
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        if (prefersReducedMotion) {
+            // 애니메이션 비활성화
+            document.documentElement.style.setProperty('--animation-duration', '0s');
+            document.documentElement.style.setProperty('--transition-duration', '0s');
+        }
+        
+        // 모바일 환경에서의 스크롤 최적화
+        let ticking = false;
+        const updateScroll = () => {
+            const scrolled = window.pageYOffset;
+            const navbar = document.querySelector('.navbar');
+            
+            if (scrolled > 50) {
+                navbar.style.background = 'rgba(10, 10, 10, 0.98)';
+                navbar.style.backdropFilter = 'blur(20px)';
+                navbar.style.webkitBackdropFilter = 'blur(20px)';
+            } else {
+                navbar.style.background = 'rgba(10, 10, 10, 0.95)';
+                navbar.style.backdropFilter = 'blur(10px)';
+                navbar.style.webkitBackdropFilter = 'blur(10px)';
+            }
+            
+            ticking = false;
+        };
+        
+        const requestTick = () => {
+            if (!ticking) {
+                requestAnimationFrame(updateScroll);
+                ticking = true;
+            }
+        };
+        
+        window.addEventListener('scroll', requestTick, { passive: true });
+        
+        // 모바일 환경에서의 터치 제스처 최적화
+        let startY = 0;
+        let startX = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+            startX = e.touches[0].clientX;
+        }, { passive: true });
+        
+        document.addEventListener('touchmove', (e) => {
+            const currentY = e.touches[0].clientY;
+            const currentX = e.touches[0].clientX;
+            const diffY = startY - currentY;
+            const diffX = startX - currentX;
+            
+            // 수직 스크롤 우선 처리
+            if (Math.abs(diffY) > Math.abs(diffX)) {
+                return;
+            }
+            
+            // 수평 스와이프 방지
+            if (Math.abs(diffX) > 50) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        // 모바일 환경에서의 더블 탭 줌 방지
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (e) => {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
+    }
+};
+
 // 앱 환경에서의 성능 최적화
 const optimizePerformanceForApp = () => {
     if (isAppEnvironment()) {
@@ -456,9 +551,10 @@ const optimizePerformanceForApp = () => {
     }
 };
 
-// Initialize typing effect when page loads with 앱 환경 최적화
+// Initialize typing effect when page loads with 모바일 환경 최적화
 window.addEventListener('load', () => {
-    // 앱 환경 최적화 초기화
+    // 모바일 환경 최적화 초기화
+    optimizePerformanceForMobile();
     optimizeScrollForApp();
     optimizeTouchForApp();
     optimizePerformanceForApp();
