@@ -5739,3 +5739,33 @@ section {
     }
 }
 
+
+/* Beta Test Styles */
+.beta-note {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    width: 100%;
+}
+
+.beta-alert {
+    text-align: center;
+    margin-top: 15px;
+    color: #aaa;
+    font-size: 0.95rem;
+}
+
+/* Update hero buttons layout for single button + note */
+.hero-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Adjust hero buttons for mobile */
+@media (max-width: 768px) {
+    .hero-buttons {
+        width: 100%;
+    }
+}
