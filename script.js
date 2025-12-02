@@ -711,14 +711,52 @@ navLinks.forEach(link => {
 
 // PWA Service Worker 등록
 const registerServiceWorker = async () => {
-  if ('serviceWorker' in navigator) {
-    try {
-      const registration = await navigator.serviceWorker.register('/sw.js');
-      console.log('LIGHT PWA Service Worker registered:', registration);
-      
-      // 업데이트 확인
-      registration.addEventListener('updatefound', () => {
-        const newWorker = registration.installing;
+  if (!('serviceWorker' in navigator)) {
+    console.log('LIGHT PWA: Service Workers are not supported in this browser');
+    return;
+  }
+
+  // HTTPS 또는 localhost에서만 Service Worker 작동
+  if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+    console.log('LIGHT PWA: Service Workers require HTTPS (or localhost)');
+    return;
+  }
+
+  try {
+    // 현재 페이지의 base path를 동적으로 감지
+    // 여러 경로 시도: 상대 경로, 절대 경로, 루트 경로
+    const swPaths = [
+      './sw.js',
+      'sw.js',
+      '/sw.js'
+    ];
+    
+    let registration = null;
+    let lastError = null;
+    
+    // 여러 경로 시도
+    for (const swPath of swPaths) {
+      try {
+        registration = await navigator.serviceWorker.register(swPath, {
+          scope: './' // 현재 디렉토리를 스코프로 설정
+        });
+        console.log('LIGHT PWA Service Worker registered at:', swPath, registration);
+        break; // 성공하면 루프 종료
+      } catch (err) {
+        lastError = err;
+        console.log('LIGHT PWA: Failed to register at', swPath, '- trying next path...');
+        continue;
+      }
+    }
+    
+    if (!registration) {
+      throw lastError || new Error('All Service Worker registration attempts failed');
+    }
+    
+    // 업데이트 확인
+    registration.addEventListener('updatefound', () => {
+      const newWorker = registration.installing;
+      if (newWorker) {
         newWorker.addEventListener('statechange', () => {
           if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
             // 새 버전 사용 가능 알림
@@ -728,33 +766,46 @@ const registerServiceWorker = async () => {
             }
           }
         });
-      });
-      
-      // 푸시 알림 권한 요청
-      if ('Notification' in window && 'PushManager' in window) {
-        const permission = await Notification.requestPermission();
-        if (permission === 'granted') {
-          console.log('LIGHT PWA Push notifications enabled');
-        }
       }
-      
-    } catch (error) {
-      console.error('LIGHT PWA Service Worker registration failed:', error);
+    });
+    
+  } catch (error) {
+    // Service Worker 등록 실패는 치명적이지 않으므로 경고만 표시
+    console.warn('LIGHT PWA Service Worker registration failed:', error.message);
+    // 개발 환경에서만 상세 에러 표시
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      console.error('Service Worker 등록 상세 에러:', error);
     }
   }
 };
 
 // PWA 설치 프롬프트
-let deferredPrompt;
+let deferredPrompt = null;
+let installButton = null;
+
 window.addEventListener('beforeinstallprompt', (e) => {
   console.log('LIGHT PWA Install prompt triggered');
+  
+  // 이미 설치된 경우 체크
+  if (window.matchMedia('(display-mode: standalone)').matches || 
+      window.navigator.standalone === true) {
+    console.log('LIGHT PWA: Already installed');
+    return;
+  }
+  
   e.preventDefault();
   deferredPrompt = e;
   
-  // 설치 버튼 표시
-  const installButton = document.createElement('button');
+  // 기존 버튼이 있으면 제거
+  if (installButton && installButton.parentNode) {
+    installButton.remove();
+  }
+  
+  // 설치 버튼 생성
+  installButton = document.createElement('button');
   installButton.textContent = '앱 설치';
   installButton.className = 'btn btn-primary';
+  installButton.setAttribute('aria-label', 'LIGHT 앱 설치');
   installButton.style.cssText = `
     position: fixed;
     bottom: 20px;
@@ -769,35 +820,90 @@ window.addEventListener('beforeinstallprompt', (e) => {
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0, 255, 136, 0.3);
     transition: all 0.3s ease;
+    font-family: 'Noto Sans KR', sans-serif;
   `;
   
+  // 호버 효과
+  installButton.addEventListener('mouseenter', () => {
+    installButton.style.transform = 'scale(1.05)';
+    installButton.style.boxShadow = '0 6px 16px rgba(0, 255, 136, 0.4)';
+  });
+  
+  installButton.addEventListener('mouseleave', () => {
+    installButton.style.transform = 'scale(1)';
+    installButton.style.boxShadow = '0 4px 12px rgba(0, 255, 136, 0.3)';
+  });
+  
+  // 클릭 이벤트
   installButton.addEventListener('click', async () => {
-    if (deferredPrompt) {
+    if (!deferredPrompt) {
+      console.log('LIGHT PWA: No deferred prompt available');
+      return;
+    }
+    
+    try {
+      // 설치 프롬프트 표시
       deferredPrompt.prompt();
+      
+      // 사용자 선택 대기
       const { outcome } = await deferredPrompt.userChoice;
       console.log('LIGHT PWA Install choice:', outcome);
+      
+      // 결과에 따라 처리
+      if (outcome === 'accepted') {
+        console.log('LIGHT PWA: User accepted the install prompt');
+      } else {
+        console.log('LIGHT PWA: User dismissed the install prompt');
+      }
+      
+      // 프롬프트는 한 번만 사용 가능
       deferredPrompt = null;
-      installButton.remove();
+      
+      // 버튼 제거
+      if (installButton && installButton.parentNode) {
+        installButton.remove();
+      }
+    } catch (error) {
+      console.error('LIGHT PWA: Error showing install prompt:', error);
+      deferredPrompt = null;
+      if (installButton && installButton.parentNode) {
+        installButton.remove();
+      }
     }
   });
   
+  // 버튼을 body에 추가
   document.body.appendChild(installButton);
   
-  // 5초 후 자동 숨김
+  // 10초 후 자동 숨김 (사용자가 볼 시간 제공)
   setTimeout(() => {
-    if (installButton.parentNode) {
-      installButton.remove();
+    if (installButton && installButton.parentNode) {
+      installButton.style.opacity = '0';
+      installButton.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        if (installButton && installButton.parentNode) {
+          installButton.remove();
+        }
+      }, 300);
     }
-  }, 5000);
+  }, 10000);
 });
 
 // PWA 설치 완료
 window.addEventListener('appinstalled', () => {
   console.log('LIGHT PWA installed successfully!');
+  
   // 설치 완료 후 처리
-  if (deferredPrompt) {
-    deferredPrompt = null;
+  deferredPrompt = null;
+  
+  // 설치 버튼 제거
+  if (installButton && installButton.parentNode) {
+    installButton.remove();
+    installButton = null;
   }
+  
+  // 설치 완료 메시지 표시 (선택적)
+  // alert('LIGHT 앱이 성공적으로 설치되었습니다!');
 });
 
 // PWA 상태 감지
