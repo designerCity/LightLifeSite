@@ -1,11 +1,22 @@
 // LIGHT PWA Service Worker
 const CACHE_NAME = 'light-pwa-v1.0.0';
+
+// 현재 위치를 기준으로 캐시할 URL 목록
+// Service Worker의 위치를 기준으로 상대 경로 사용
+const getBaseUrl = () => {
+  // Service Worker 파일의 디렉토리를 base URL로 사용
+  const swUrl = new URL(self.location.href);
+  const basePath = swUrl.pathname.substring(0, swUrl.pathname.lastIndexOf('/') + 1);
+  return swUrl.origin + basePath;
+};
+
+const baseUrl = getBaseUrl();
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/styles.css',
-  '/script.js',
-  '/manifest.json',
+  baseUrl,
+  baseUrl + 'index.html',
+  baseUrl + 'styles.css',
+  baseUrl + 'script.js',
+  baseUrl + 'manifest.json',
   'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'
 ];
@@ -110,7 +121,12 @@ self.addEventListener('fetch', (event) => {
           .catch(() => {
             // 네트워크 실패 시 오프라인 페이지 반환
             if (event.request.destination === 'document') {
-              return caches.match('/index.html');
+              // 현재 위치를 기준으로 index.html 찾기
+              const baseUrl = new URL(event.request.url).origin + new URL(event.request.url).pathname.replace(/\/[^/]*$/, '/');
+              return caches.match(baseUrl + 'index.html').catch(() => {
+                // 캐시에서 찾지 못하면 루트 index.html 시도
+                return caches.match(new URL('./index.html', event.request.url).href);
+              });
             }
           });
       })
